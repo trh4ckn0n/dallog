@@ -9,6 +9,8 @@ Pour commencer, clonez le dépôt avec la commande suivante et accédez au répe
 ```bash
 git clone https://github.com/trh4ckn0n/dallog.git
 cd dallog
+chmod +x install.sh
+./install.sh
 ```
  
 ### Téléchargement des polices
