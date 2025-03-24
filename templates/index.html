@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Logo</title>
+    <style>
+        /* Style de base */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #181818;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            background-color: #222;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #00ff00;
+            font-size: 2.5em;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        header img {
+            max-width: 200px;
+            margin: 20px 0;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        label, select, input, button {
+            margin: 10px 0;
+            padding: 12px;
+            background-color: #333;
+            color: #fff;
+            border: 2px solid #444;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+
+        input[type="color"], select {
+            width: auto;
+            cursor: pointer;
+        }
+
+        select:focus, input:focus {
+            border-color: #00ff00;
+            background-color: #444;
+            outline: none;
+        }
+
+        input[type="text"]:disabled {
+            background-color: #333;
+        }
+
+        button {
+            cursor: pointer;
+            background-color: #555;
+            font-size: 1.1em;
+        }
+
+        button:hover {
+            background-color: #666;
+        }
+
+        .logo-preview {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .logo-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 255, 0, 0.2);
+        }
+
+        .logo-preview a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #444;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .logo-preview a:hover {
+            background-color: #00ff00;
+        }
+
+        /* Styles supplémentaires pour améliorer l'interface */
+        .form-container {
+            background-color: #222;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 255, 0, 0.4);
+        }
+
+        .form-container label {
+            color: #00ff00;
+            font-size: 1.2em;
+        }
+
+        input[type="submit"] {
+            background-color: #00ff00;
+            color: #222;
+            font-size: 1.2em;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #00cc00;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Votre logo SVG -->
+        <!-- <img src="https://github.com/trh4ckn0n/work/raw/refs/heads/main/trknfck.svg" alt="Logo trhacknon"> -->
+        <img src="https://github.com/trh4ckn0n/work/raw/refs/heads/main/trkno.svg" alt="Logo trhacknon">
+        <h1>Générateur de Logo avec Slogan Personnalisé</h1>
+    </header>
+
+    <div class="container">
+        <div class="form-container">
+            <form action="/generate" method="POST" enctype="multipart/form-data">
+                <label for="nom_dev">Nom du développeur :</label><br>
+                <input type="text" id="nom_dev" name="nom_dev" required><br><br>
+
+                <label for="slogan">Choisir un slogan :</label><br>
+                <select id="slogan" name="slogan" onchange="clearCustomSlogan()">
+                    <option value="">-- Sélectionner un slogan --</option>
+                    {% for slogan in slogans %}
+                        <option value="{{ slogan }}" {% if slogan == request.form.get('slogan') %}selected{% endif %}>{{ slogan }}</option>
+                    {% endfor %}
+                </select><br><br>
+
+                <label for="custom_slogan">Ou entrez un slogan personnalisé :</label><br>
+                <input type="text" id="custom_slogan" name="custom_slogan" placeholder="Entrez votre slogan personnalisé" value="{{ request.form.get('custom_slogan') }}"><br><br>
+
+                <label for="texte_nom_color">Couleur du texte du nom :</label><br>
+                <input type="color" id="texte_nom_color" name="texte_nom_color" required><br><br>
+
+                <label for="texte_slogan_color">Couleur du texte du slogan :</label><br>
+                <input type="color" id="texte_slogan_color" name="texte_slogan_color" required><br><br>
+
+                <label for="font_choice">Choisir une police :</label><br>
+                <select id="font_choice" name="font_choice" required>
+                    {% for font in polices %}
+                        <option value="{{ font }}" {% if font == request.form.get('font_choice') %}selected{% endif %}>{{ font }}</option>
+                    {% endfor %}
+                </select><br><br>
+
+                <input type="submit" value="Générer le Logo">
+            </form>
+        </div>
+
+        {% if image_url %}
+            <div class="logo-preview">
+                <h2>Logo généré :</h2>
+                <img src="{{ image_url }}" alt="Logo généré">
+                <a href="{{ image_url }}" target="_blank">Télécharger le logo</a>
+            </div>
+        {% endif %}
+    </div>
+    <img src="https://github.com/trh4ckn0n/work/raw/refs/heads/main/trknfck.svg" alt="Logo trhacknon" width="50%" height="auto">
+    <div class="footer">
+        <p>Créé par <strong>trhacknon</strong> - Tous droits réservés</p>
+    </div>
+
+    <script>
+        // Fonction qui vide le champ custom_slogan lorsque un slogan est sélectionné
+        function clearCustomSlogan() {
+            var sloganSelect = document.getElementById("slogan");
+            var customSloganInput = document.getElementById("custom_slogan");
+
+            // Si un slogan est sélectionné dans la liste, efface le champ custom_slogan
+            if (sloganSelect.value !== "") {
+                customSloganInput.value = "";
+            }
+        }
+    </script>
+</body>
+</html>
