@@ -28,7 +28,7 @@ if [ -f "uploads.zip" ]; then
     fi
     
     # Décompresser l'archive
-    unzip -o uploads.zip -d uploads/
+    unzip -o uploads/uploads.zip -d uploads/
     
     # Vérifier si l'extraction a réussi
     if [ $? -eq 0 ]; then
